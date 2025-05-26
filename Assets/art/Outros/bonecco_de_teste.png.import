@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bk71ruo2m4elv"
-path="res://.godot/imported/gabreu.png-8a9397439c97fa1c6d3384c0c4602f74.ctex"
+uid="uid://lra1v3di1nsh"
+path="res://.godot/imported/bonecco_de_teste.png-ea26380ea4200903726ae68a4f2c85e8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/gabreu.png"
-dest_files=["res://.godot/imported/gabreu.png-8a9397439c97fa1c6d3384c0c4602f74.ctex"]
+source_file="res://Assets/art/Outros/bonecco_de_teste.png"
+dest_files=["res://.godot/imported/bonecco_de_teste.png-ea26380ea4200903726ae68a4f2c85e8.ctex"]
 
 [params]
 

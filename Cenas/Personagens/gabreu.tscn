@@ -1,0 +1,85 @@
+[gd_scene load_steps=11 format=3 uid="uid://c67todrx8575j"]
+
+[ext_resource type="Script" uid="uid://dcpb4rv0n1yfw" path="res://Scripts/Personagens/Player.gd" id="1_8b0je"]
+[ext_resource type="Texture2D" uid="uid://bk71ruo2m4elv" path="res://Assets/art/Personagens/gabreu.png" id="2_smuk6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2hs16"]
+size = Vector2(35, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lfqux"]
+atlas = ExtResource("2_smuk6")
+region = Rect2(0, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swbdh"]
+atlas = ExtResource("2_smuk6")
+region = Rect2(0, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jcjbl"]
+atlas = ExtResource("2_smuk6")
+region = Rect2(96, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xrj72"]
+atlas = ExtResource("2_smuk6")
+region = Rect2(192, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qyfu0"]
+atlas = ExtResource("2_smuk6")
+region = Rect2(288, 0, 96, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_auav0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lfqux")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swbdh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jcjbl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xrj72")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qyfu0")
+}],
+"loop": false,
+"name": &"soco",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8b0je"]
+size = Vector2(18, 48)
+
+[node name="Gabreu" type="CharacterBody2D"]
+script = ExtResource("1_8b0je")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 5)
+shape = SubResource("RectangleShape2D_2hs16")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_auav0")
+animation = &"soco"
+frame = 3
+frame_progress = 1.0
+
+[node name="HitboxBraco" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxBraco"]
+position = Vector2(-19, -19)
+shape = SubResource("RectangleShape2D_8b0je")
+
+[connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_shape_entered" from="HitboxBraco" to="." method="_on_area_2d_area_shape_entered"]

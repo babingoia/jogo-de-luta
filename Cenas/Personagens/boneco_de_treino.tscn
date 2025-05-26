@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://b1r8gijavx1sx"]
+
+[ext_resource type="Texture2D" uid="uid://lra1v3di1nsh" path="res://Assets/art/Outros/bonecco_de_teste.png" id="1_u2sbu"]
+[ext_resource type="Script" uid="uid://j5i840674ehx" path="res://Scripts/Personagens/dano.gd" id="2_6noss"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6noss"]
+atlas = ExtResource("1_u2sbu")
+region = Rect2(0, 0, 63, 105)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_se0x4"]
+atlas = ExtResource("1_u2sbu")
+region = Rect2(63, 0, 63, 105)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvpu1"]
+atlas = ExtResource("1_u2sbu")
+region = Rect2(0, 0, 63, 105)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sbgpr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6noss")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_se0x4")
+}],
+"loop": false,
+"name": &"dano",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fvpu1")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_se0x4"]
+size = Vector2(18, 96)
+
+[node name="BonecoDeTreino" type="Node2D"]
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_6noss")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Area2D"]
+sprite_frames = SubResource("SpriteFrames_sbgpr")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-1, 3)
+shape = SubResource("RectangleShape2D_se0x4")
+
+[connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]
+[connection signal="animation_finished" from="Area2D/AnimatedSprite2D" to="Area2D" method="_on_animated_sprite_2d_animation_finished"]

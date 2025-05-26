@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://d30f4e2fxknwd"]
+
+[ext_resource type="PackedScene" uid="uid://c67todrx8575j" path="res://Cenas/Personagens/gabreu.tscn" id="1_hymai"]
+[ext_resource type="Texture2D" uid="uid://dqng6a8tg0ck4" path="res://icon.svg" id="2_duxi8"]
+[ext_resource type="PackedScene" uid="uid://b1r8gijavx1sx" path="res://Cenas/Personagens/boneco_de_treino.tscn" id="3_duxi8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r11nh"]
+size = Vector2(1160, 131)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lfqux"]
+size = Vector2(22, 573)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="BonecoDeTreino" parent="." instance=ExtResource("3_duxi8")]
+position = Vector2(907, 537)
+
+[node name="Gabreu" parent="." instance=ExtResource("1_hymai")]
+position = Vector2(280, 456)
+
+[node name="Chao" type="StaticBody2D" parent="."]
+position = Vector2(66, 653)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Chao"]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(510, 0)
+scale = Vector2(10.3438, 1)
+texture = ExtResource("2_duxi8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chao"]
+position = Vector2(514, 1.5)
+shape = SubResource("RectangleShape2D_r11nh")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(10, 25)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1, 276.5)
+shape = SubResource("RectangleShape2D_lfqux")
+
+[node name="Parede" type="StaticBody2D" parent="."]
+position = Vector2(1147, 25)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parede"]
+position = Vector2(1, 276.5)
+shape = SubResource("RectangleShape2D_lfqux")
