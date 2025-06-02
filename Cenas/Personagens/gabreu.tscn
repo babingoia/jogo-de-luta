@@ -1,10 +1,53 @@
-[gd_scene load_steps=11 format=3 uid="uid://c67todrx8575j"]
+[gd_scene load_steps=17 format=3 uid="uid://c67todrx8575j"]
 
 [ext_resource type="Script" uid="uid://dcpb4rv0n1yfw" path="res://Scripts/Personagens/Player.gd" id="1_8b0je"]
+[ext_resource type="Script" uid="uid://c70p1me1myeh4" path="res://Scripts/Animacoes/StateMachine.gd" id="2_n1am6"]
 [ext_resource type="Texture2D" uid="uid://bk71ruo2m4elv" path="res://Assets/art/Personagens/gabreu.png" id="2_smuk6"]
+[ext_resource type="Script" uid="uid://cg1iggrcfbj72" path="res://Scripts/Animacoes/Gabreu/Idle.gd" id="3_n1am6"]
+[ext_resource type="Script" uid="uid://blwkh371vh2b" path="res://Scripts/Animacoes/Gabreu/Walking.gd" id="4_0mn8m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hs16"]
 size = Vector2(35, 100)
+
+[sub_resource type="Animation" id="Animation_itvld"]
+resource_name = "Idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_0mn8m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_y12ke"]
+resource_name = "Walking"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y12ke"]
+_data = {
+&"Idle": SubResource("Animation_itvld"),
+&"RESET": SubResource("Animation_0mn8m"),
+&"Walking": SubResource("Animation_y12ke")
+}
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lfqux"]
 atlas = ExtResource("2_smuk6")
@@ -33,7 +76,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_lfqux")
 }],
 "loop": true,
-"name": &"default",
+"name": &"idle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -54,10 +97,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8b0je"]
-size = Vector2(18, 48)
-
-[node name="Gabreu" type="CharacterBody2D"]
+[node name="Gabreu" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_8b0je")
 metadata/_edit_group_ = true
 
@@ -68,18 +108,24 @@ shape = SubResource("RectangleShape2D_2hs16")
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Animation" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_y12ke")
+}
+
+[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("2_n1am6")
+starting_state = NodePath("idle")
+
+[node name="idle" type="Node2D" parent="StateMachine"]
+script = ExtResource("3_n1am6")
+
+[node name="soco" type="Node2D" parent="StateMachine"]
+script = ExtResource("4_0mn8m")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_auav0")
 animation = &"soco"
-frame = 3
-frame_progress = 1.0
 
-[node name="HitboxBraco" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxBraco"]
-position = Vector2(-19, -19)
-shape = SubResource("RectangleShape2D_8b0je")
-
-[connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="area_shape_entered" from="HitboxBraco" to="." method="_on_area_2d_area_shape_entered"]
+[connection signal="animation_changed" from="Sprite" to="." method="_on_animated_sprite_2d_animation_changed"]
+[connection signal="animation_finished" from="Sprite" to="." method="_on_animated_sprite_2d_animation_finished"]

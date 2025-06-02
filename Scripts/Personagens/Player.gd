@@ -1,4 +1,10 @@
+class_name Player
 extends Gravidade
+
+#libs
+@onready var state_machine: StateMachine = $"StateMachine"
+@onready var animation: AnimationPlayer = $Animation
+@onready var sprite: AnimatedSprite2D = $Sprite
 
 # Controles
 @export var direita = "left"
@@ -10,48 +16,33 @@ extends Gravidade
 
 # Outras variaveis
 @export var speed = 400
-		
-func controle_anim():
-	if Input.is_action_just_pressed("ataque_leve"):
-		$AnimatedSprite2D.play('soco')
-		
+
+
 func get_input():
 	calcular_queda()
 	velocity.x = 0
 	if(Input.is_action_pressed("left")):
 		velocity.x = -1
-		$AnimatedSprite2D.scale.x = 1
-		$HitboxBraco.scale.x = 1
+		sprite.flip_h = false
 	if(Input.is_action_pressed("right")):
 		velocity.x = 1
-		$AnimatedSprite2D.scale.x = -1
-		$HitboxBraco.scale.x = -1
+		sprite.flip_h = true
 	if(Input.is_action_just_pressed("up")) && (is_on_floor()):
 		velocity.y = -1
 		velocity.y *= speed
 	velocity.x *= speed
-	
 
 
-func _ready() -> void:
-	$HitboxBraco.monitorable = false
+func _ready() -> void: state_machine.init()
 
 
 func _physics_process(delta):
-	controle_anim()
+	state_machine.process_physics(delta)
 	get_input()
 	move_and_slide()
 
 
-func _on_area_2d_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
-	pass # Replace with function body.
-
-func _on_animated_sprite_2d_animation_finished() -> void:
-	if ($AnimatedSprite2D.animation == 'soco'):
-		$AnimatedSprite2D.play("default")
-		$HitboxBraco.monitorable = false
+func _process(delta: float) -> void: state_machine.process_frame(delta)
 
 
-func _on_animated_sprite_2d_animation_changed() -> void:
-	if ($AnimatedSprite2D.animation == 'soco'):
-		$HitboxBraco.monitorable = true
+func _input(event): state_machine.process_input(event)
